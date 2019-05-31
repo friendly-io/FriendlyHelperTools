@@ -1,8 +1,10 @@
+// <origin src="https://github.com/friendly-io/FriendlyHelperTools/raw/master/FriendlyHelperTools/ObservationCenter.swift" />
 //
-//  ObservationCenter.swift
-//  FriendlyHelperTools
+//  Observation.swift
+//  friendlyAppKit
 //
-//  Created by spsadmin on 5/31/19.
+//  Created by spsadmin on 3/4/19.
+//  Copyright © 2019 Friendly App Studio. All rights reserved.
 //
 
 import Foundation
@@ -20,8 +22,10 @@ final class ObservationToken {
 final class ObservationCenter<ObservedType, EventType> {
     private var handlers = [UUID : (ObservedType, EventType) -> Void]()
     func notify(change: EventType,from observed: ObservedType) {
-        handlers.values.forEach {
-            $0(observed, change)
+        DispatchQueue.main.async {
+            self.handlers.values.forEach {
+                $0(observed, change)
+            }
         }
     }
     @discardableResult
