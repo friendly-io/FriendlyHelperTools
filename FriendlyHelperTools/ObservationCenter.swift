@@ -21,6 +21,10 @@ public final class ObservationToken {
 
 public final class ObservationCenter<ObservedType, EventType> {
     private var handlers = [UUID : (ObservedType, EventType) -> Void]()
+    
+    public init() {
+    }
+    
     public func notify(change: EventType,from observed: ObservedType) {
         DispatchQueue.main.async {
             self.handlers.values.forEach {
