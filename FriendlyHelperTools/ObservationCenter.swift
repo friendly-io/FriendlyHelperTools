@@ -9,19 +9,19 @@
 
 import Foundation
 
-final class ObservationToken {
+public final class ObservationToken {
     private let cancellationClosure: () -> Void
     init(cancellationClosure: @escaping () -> Void) {
         self.cancellationClosure = cancellationClosure
     }
-    func cancel() {
+    public func cancel() {
         cancellationClosure()
     }
 }
 
-final class ObservationCenter<ObservedType, EventType> {
+public final class ObservationCenter<ObservedType, EventType> {
     private var handlers = [UUID : (ObservedType, EventType) -> Void]()
-    func notify(change: EventType,from observed: ObservedType) {
+    public func notify(change: EventType,from observed: ObservedType) {
         DispatchQueue.main.async {
             self.handlers.values.forEach {
                 $0(observed, change)
@@ -29,7 +29,7 @@ final class ObservationCenter<ObservedType, EventType> {
         }
     }
     @discardableResult
-    func addObserver<T:AnyObject>(_ observer: T, onEvent: @escaping (T, ObservedType, EventType) -> Void) -> ObservationToken {
+    public func addObserver<T:AnyObject>(_ observer: T, onEvent: @escaping (T, ObservedType, EventType) -> Void) -> ObservationToken {
         let id = UUID()
         handlers[id] = { [weak self, weak observer] observed, change in
             guard let observer = observer else {
